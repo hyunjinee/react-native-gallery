@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "682469151780",
+    "project_id": "hyunjin-gallery",
+    "storage_bucket": "hyunjin-gallery.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:682469151780:android:66d93ae4528f0df4e934b1",
+        "android_client_info": {
+          "package_name": "com.galleryhyunjin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "682469151780-o1mcrv6uevnuhtc0ftlv91sq0jd79uuh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.galleryhyunjin",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "682469151780-5lggrs9s5j5puesdf58s74u1i7icui85.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDm9towTdSgJMuwxWQ5sAy8MfzluCVDWsQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "682469151780-5lggrs9s5j5puesdf58s74u1i7icui85.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
