@@ -9,21 +9,27 @@ import BorderedInput from './BorderedInput';
 import CustomButton from './CustomButton';
 import {createUser} from '../lib/users';
 import {signOut} from '../lib/auth';
+import {User, useUserContext} from '../contexts/UserContext';
 
 function SetupProfile() {
   const [displayName, setDisplayName] = useState('');
+  const {setUser} = useUserContext();
 
   const navigation = useNavigation<RootStackNavigationProp>();
 
   const {params} = useRoute<WelcomeScreenRouteProp>();
   const {uid} = params || {};
 
-  const onSubmit = () => {
-    createUser({
+  const onSubmit = async () => {
+    const user: User = {
       id: uid,
       displayName,
       photoURL: null,
-    });
+    };
+
+    await createUser(user);
+
+    setUser(user);
   };
 
   const onCancel = () => {

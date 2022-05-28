@@ -16,6 +16,7 @@ import SignForm from '../components/SignForm';
 import SignButtons from '../components/SignButtons';
 import {signIn, signUp} from '../lib/auth';
 import {getUser} from '../lib/users';
+import {User, useUserContext} from '../contexts/UserContext';
 
 function SignInScreen() {
   const navigation = useNavigation<RootStackNavigationProp>();
@@ -29,6 +30,7 @@ function SignInScreen() {
     confirmPassword: '',
   });
   const [loading, setLoading] = useState(false);
+  const {setUser} = useUserContext();
 
   const createChangeTextHandler = (name: string) => (value: string) => {
     setForm({...form, [name]: value});
@@ -54,7 +56,8 @@ function SignInScreen() {
       if (!profile) {
         navigation.navigate('WelcomeScreen', {uid: user.uid});
       } else {
-        console.log('구현 예정');
+        setUser(profile as User);
+        navigation.navigate('WelcomeScreen', {uid: user.uid});
       }
     } catch (error: any) {
       const messages = {

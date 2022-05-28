@@ -1,7 +1,9 @@
 import React, {useContext, createContext, useState} from 'react';
 
-interface User {
-  id: string;
+export interface User {
+  id: string | undefined;
+  displayName: string;
+  photoURL: string | null;
 }
 
 interface UserContextValue {
