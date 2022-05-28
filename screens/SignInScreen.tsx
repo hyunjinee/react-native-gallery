@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react';
+import React, {useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {
   StyleSheet,
@@ -6,7 +6,6 @@ import {
   View,
   Keyboard,
   KeyboardAvoidingView,
-  TextInput,
   Platform,
 } from 'react-native';
 import {useRoute} from '@react-navigation/native';
@@ -24,9 +23,6 @@ function SignInScreen() {
     password: '',
     confirmPassword: '',
   });
-
-  const passwordRef = useRef<TextInput>(null);
-  const confirmPasswordRef = useRef<TextInput>(null);
 
   const createChangeTextHandler = (name: string) => (value: string) => {
     setForm({...form, [name]: value});
