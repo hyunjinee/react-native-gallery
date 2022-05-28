@@ -7,9 +7,9 @@ export function createUser({
   displayName,
   photoURL,
 }: {
-  id: string;
+  id: string | undefined;
   displayName: string;
-  photoURL: string;
+  photoURL: string | null;
 }) {
   return usersCollection.doc(id).set({
     id,

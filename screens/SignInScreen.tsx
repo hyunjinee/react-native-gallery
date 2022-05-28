@@ -9,15 +9,18 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
-import {useRoute} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 
-import {SignInScreenRouteProp} from './RootStack';
+import {RootStackNavigationProp, SignInScreenRouteProp} from './RootStack';
 import SignForm from '../components/SignForm';
 import SignButtons from '../components/SignButtons';
 import {signIn, signUp} from '../lib/auth';
+import {getUser} from '../lib/users';
 
 function SignInScreen() {
+  const navigation = useNavigation<RootStackNavigationProp>();
   const {params} = useRoute<SignInScreenRouteProp>();
+
   const isSignUp = params?.isSignUp ?? undefined;
 
   const [form, setForm] = useState({
@@ -46,6 +49,13 @@ function SignInScreen() {
     try {
       const {user} = isSignUp ? await signUp(info) : await signIn(info);
       console.log(user);
+      const profile = await getUser(user.uid);
+
+      if (!profile) {
+        navigation.navigate('WelcomeScreen', {uid: user.uid});
+      } else {
+        console.log('구현 예정');
+      }
     } catch (error: any) {
       const messages = {
         'auth/email-already-in-use': '이미 사용중인 이메일입니다.',

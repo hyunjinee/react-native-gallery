@@ -1,15 +1,22 @@
 import React from 'react';
+import {RouteProp} from '@react-navigation/native';
 import {
   createNativeStackNavigator,
   NativeStackNavigationProp,
 } from '@react-navigation/native-stack';
+
 import SignInScreen from './SignInScreen';
-import {RouteProp} from '@react-navigation/native';
+import WelcomeScreen from './WelcomeScreen';
 
 type RootStackParamList = {
   SignInScreen:
     | {
         isSignUp: boolean;
+      }
+    | undefined;
+  WelcomeScreen:
+    | {
+        uid: string;
       }
     | undefined;
 };
@@ -22,6 +29,11 @@ export type SignInScreenRouteProp = RouteProp<
   'SignInScreen'
 >;
 
+export type WelcomeScreenRouteProp = RouteProp<
+  RootStackParamList,
+  'WelcomeScreen'
+>;
+
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function RootStack() {
@@ -30,6 +42,13 @@ function RootStack() {
       <Stack.Screen
         name="SignInScreen"
         component={SignInScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="WelcomeScreen"
+        component={WelcomeScreen}
         options={{
           headerShown: false,
         }}
