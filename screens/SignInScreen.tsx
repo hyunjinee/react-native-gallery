@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useRef} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {
   StyleSheet,
@@ -6,6 +6,7 @@ import {
   View,
   Keyboard,
   KeyboardAvoidingView,
+  TextInput,
 } from 'react-native';
 import {useNavigation, useRoute} from '@react-navigation/native';
 
@@ -23,6 +24,9 @@ function SignInScreen() {
     password: '',
     confirmPassword: '',
   });
+
+  const passwordRef = useRef<TextInput>(null);
+  const confirmPasswordRef = useRef<TextInput>(null);
 
   const createChangeTextHandler = (name: string) => (value: string) => {
     setForm({...form, [name]: value});
@@ -45,6 +49,12 @@ function SignInScreen() {
           autoCapitalize="none"
           autoComplete="email"
           keyboardType="email-address"
+          onSubmitEditing={() => {
+            if (passwordRef.current !== null) {
+              passwordRef.current.focus();
+            }
+          }}
+          returnKeyType="next"
         />
         <BorderedInput
           placeholder="비밀번호"
@@ -52,6 +62,8 @@ function SignInScreen() {
           onChangeText={createChangeTextHandler('password')}
           hasMarginBottom={!!isSignUp}
           secureTextEntry
+          ref={passwordRef}
+          returnKeyType="next"
         />
         {isSignUp && (
           <BorderedInput
@@ -59,6 +71,9 @@ function SignInScreen() {
             value={form.confirmPassword}
             onChangeText={createChangeTextHandler('confirmPassword')}
             secureTextEntry
+            ref={confirmPasswordRef}
+            returnKeyType="done"
+            onSubmitEditing={onSubmit}
           />
         )}
         <View style={styles.buttons}>

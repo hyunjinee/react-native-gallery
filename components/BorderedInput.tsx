@@ -8,11 +8,15 @@ interface BorderedInputProps extends TextInputProps {
   onChangeText: (valie: string) => void;
 }
 
-function BorderedInput({hasMarginBottom, ...rest}: BorderedInputProps) {
+function BorderedInput(
+  {hasMarginBottom, ...rest}: BorderedInputProps,
+  ref: React.LegacyRef<TextInput> | undefined,
+) {
   return (
     <TextInput
       style={[styles.input, hasMarginBottom && styles.margin]}
       {...rest}
+      ref={ref}
     />
   );
 }
@@ -31,4 +35,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default BorderedInput;
+export default React.forwardRef(BorderedInput);
