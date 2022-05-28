@@ -1,3 +1,4 @@
+#import <Firebase.h>
 #import "AppDelegate.h"
 
 #import <React/RCTBridge.h>
@@ -41,6 +42,14 @@
   bridge.surfacePresenter = _bridgeAdapter.surfacePresenter;
 #endif
 
+// #ifdef FB_SONARKIT_ENABLED
+//   InitializeFlipper(application);
+// #endif
+
+  // if ([FIRApp defaultApp] == nil) {
+  //   [FIRApp configure];
+  // }
+
   UIView *rootView = RCTAppSetupDefaultRootView(bridge, @"galleryhyunjin", nil);
 
   if (@available(iOS 13.0, *)) {
@@ -48,6 +57,8 @@
   } else {
     rootView.backgroundColor = [UIColor whiteColor];
   }
+
+
 
   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
   UIViewController *rootViewController = [UIViewController new];
