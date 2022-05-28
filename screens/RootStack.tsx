@@ -4,13 +4,23 @@ import {
   NativeStackNavigationProp,
 } from '@react-navigation/native-stack';
 import SignInScreen from './SignInScreen';
+import {RouteProp} from '@react-navigation/native';
 
 type RootStackParamList = {
-  SignIn: undefined;
+  SignInScreen:
+    | {
+        isSignUp: boolean;
+      }
+    | undefined;
 };
 
 export type RootStackNavigationProp =
   NativeStackNavigationProp<RootStackParamList>;
+
+export type SignInScreenRouteProp = RouteProp<
+  RootStackParamList,
+  'SignInScreen'
+>;
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -18,7 +28,7 @@ function RootStack() {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="SignIn"
+        name="SignInScreen"
         component={SignInScreen}
         options={{
           headerShown: false,
