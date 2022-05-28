@@ -7,17 +7,17 @@ import {
   Keyboard,
   KeyboardAvoidingView,
   TextInput,
+  Platform,
 } from 'react-native';
-import {useNavigation, useRoute} from '@react-navigation/native';
+import {useRoute} from '@react-navigation/native';
 
-import BorderedInput from '../components/BorderedInput';
-import CustomButton from '../components/CustomButton';
-import {RootStackNavigationProp, SignInScreenRouteProp} from './RootStack';
+import {SignInScreenRouteProp} from './RootStack';
+import SignForm from '../components/SignForm';
+import SignButtons from '../components/SignButtons';
 
 function SignInScreen() {
   const {params} = useRoute<SignInScreenRouteProp>();
   const isSignUp = params?.isSignUp ?? {};
-  const navigation = useNavigation<RootStackNavigationProp>();
 
   const [form, setForm] = useState({
     email: '',
@@ -38,79 +38,27 @@ function SignInScreen() {
   };
 
   return (
-    <SafeAreaView style={styles.fullscreen}>
-      <Text style={styles.text}>PublicGallery</Text>
-      <View style={styles.form}>
-        <BorderedInput
-          hasMarginBottom
-          placeholder="이메일"
-          value={form.email}
-          onChangeText={createChangeTextHandler('email')}
-          autoCapitalize="none"
-          autoComplete="email"
-          keyboardType="email-address"
-          onSubmitEditing={() => {
-            if (passwordRef.current !== null) {
-              passwordRef.current.focus();
-            }
-          }}
-          returnKeyType="next"
-        />
-        <BorderedInput
-          placeholder="비밀번호"
-          value={form.password}
-          onChangeText={createChangeTextHandler('password')}
-          hasMarginBottom={!!isSignUp}
-          secureTextEntry
-          ref={passwordRef}
-          returnKeyType="next"
-        />
-        {isSignUp && (
-          <BorderedInput
-            placeholder="비밀번호 확인"
-            value={form.confirmPassword}
-            onChangeText={createChangeTextHandler('confirmPassword')}
-            secureTextEntry
-            ref={confirmPasswordRef}
-            returnKeyType="done"
-            onSubmitEditing={onSubmit}
+    <KeyboardAvoidingView
+      style={styles.keyboardAvoidingView}
+      behavior={Platform.select({ios: 'padding'})}>
+      <SafeAreaView style={styles.fullscreen}>
+        <Text style={styles.text}>PublicGallery</Text>
+        <View style={styles.form}>
+          <SignForm
+            isSignUp={!!isSignUp}
+            onSubmit={onSubmit}
+            form={form}
+            createChangeTextHandler={createChangeTextHandler}
           />
-        )}
-        <View style={styles.buttons}>
-          {isSignUp ? (
-            <>
-              <CustomButton
-                title="회원가입"
-                hasMarginBottom
-                onPress={onSubmit}
-              />
-              <CustomButton
-                title="로그인"
-                theme="secondary"
-                onPress={() => {
-                  navigation.goBack();
-                }}
-              />
-            </>
-          ) : (
-            <>
-              <CustomButton title="로그인" hasMarginBottom onPress={onSubmit} />
-              <CustomButton
-                title="회원가입"
-                theme="secondary"
-                onPress={() => {
-                  navigation.push('SignInScreen', {isSignUp: true});
-                }}
-              />
-            </>
-          )}
+          <SignButtons isSignUp={!!isSignUp} onSubmit={onSubmit} />
         </View>
-      </View>
-    </SafeAreaView>
+      </SafeAreaView>
+    </KeyboardAvoidingView>
   );
 }
 
 const styles = StyleSheet.create({
+  keyboardAvoidingView: {flex: 1},
   fullscreen: {
     flex: 1,
     alignItems: 'center',
