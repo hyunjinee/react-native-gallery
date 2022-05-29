@@ -7,8 +7,11 @@ import {
 
 import SignInScreen from './SignInScreen';
 import WelcomeScreen from './WelcomeScreen';
+import {useUserContext} from '../contexts/UserContext';
+import MainTab from './MainTab';
 
 type RootStackParamList = {
+  MainTab: undefined;
   SignInScreen:
     | {
         isSignUp: boolean;
@@ -37,22 +40,36 @@ export type WelcomeScreenRouteProp = RouteProp<
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function RootStack() {
+  const {user} = useUserContext();
+
   return (
     <Stack.Navigator>
-      <Stack.Screen
-        name="SignInScreen"
-        component={SignInScreen}
-        options={{
-          headerShown: false,
-        }}
-      />
-      <Stack.Screen
-        name="WelcomeScreen"
-        component={WelcomeScreen}
-        options={{
-          headerShown: false,
-        }}
-      />
+      {user ? (
+        <>
+          <Stack.Screen
+            name="MainTab"
+            component={MainTab}
+            options={{headerShown: false}}
+          />
+        </>
+      ) : (
+        <>
+          <Stack.Screen
+            name="SignInScreen"
+            component={SignInScreen}
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="WelcomeScreen"
+            component={WelcomeScreen}
+            options={{
+              headerShown: false,
+            }}
+          />
+        </>
+      )}
     </Stack.Navigator>
   );
 }
