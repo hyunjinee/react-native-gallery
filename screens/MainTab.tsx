@@ -1,15 +1,44 @@
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {Image, StyleSheet, Text, View} from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import {useUserContext} from '../contexts/UserContext';
+import HomeStack from './HomeStack';
+import MyProfileStack from './MyProfileStack';
+
+type MainTabParamList = {
+  HomeStack: undefined;
+  MyProfileStack: undefined;
+};
+
+const Tab = createBottomTabNavigator<MainTabParamList>();
 
 function MainTab() {
-  const {user} = useUserContext();
-
   return (
-    <View style={styles.block}>
-      <Text style={styles.text}>Hello, {user?.displayName}</Text>
-    </View>
+    <Tab.Navigator
+      screenOptions={{
+        headerShown: false,
+        tabBarShowLabel: false,
+        tabBarActiveTintColor: '#6200ee',
+      }}>
+      <Tab.Screen
+        name="HomeStack"
+        component={HomeStack}
+        options={{
+          tabBarIcon: ({color}) => <Icon name="home" color={color} size={24} />,
+        }}
+      />
+      <Tab.Screen
+        name="MyProfileStack"
+        component={MyProfileStack}
+        options={{
+          tabBarIcon: ({color}) => (
+            <Icon name="person" color={color} size={24} />
+          ),
+        }}
+      />
+    </Tab.Navigator>
   );
 }
 

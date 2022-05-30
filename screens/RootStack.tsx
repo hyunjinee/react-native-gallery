@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {RouteProp} from '@react-navigation/native';
 import {
   createNativeStackNavigator,
@@ -7,8 +7,10 @@ import {
 
 import SignInScreen from './SignInScreen';
 import WelcomeScreen from './WelcomeScreen';
-import {useUserContext} from '../contexts/UserContext';
+import {User, useUserContext} from '../contexts/UserContext';
 import MainTab from './MainTab';
+import {subscribeAuth} from '../lib/auth';
+import {getUser} from '../lib/users';
 
 type RootStackParamList = {
   MainTab: undefined;
@@ -40,7 +42,21 @@ export type WelcomeScreenRouteProp = RouteProp<
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function RootStack() {
-  const {user} = useUserContext();
+  const {user, setUser} = useUserContext();
+
+  useEffect(() => {
+    const unsubscribe = subscribeAuth(async (currentUser: any) => {
+      unsubscribe();
+      if (!currentUser) {
+        return;
+      }
+      const profile = await getUser(currentUser.id);
+      if (!profile) {
+        return;
+      }
+      setUser(profile as User);
+    });
+  }, [setUser]);
 
   return (
     <Stack.Navigator>
