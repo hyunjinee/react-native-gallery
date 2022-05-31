@@ -16,6 +16,8 @@ import {
 } from 'react-native-image-picker';
 
 import UploadModeModal from './UploadModeModal';
+import {useNavigation} from '@react-navigation/native';
+import {RootStackNavigationProp} from '../screens/RootStack';
 
 const TABBAR_HEIGHT = 49;
 
@@ -29,6 +31,7 @@ const imagePickerOption = {
 function CameraButton() {
   const [modalVisible, setModalVisible] = useState(false);
   const insets = useSafeAreaInsets();
+  const navigation = useNavigation<RootStackNavigationProp>();
 
   const bottom = Platform.select({
     android: TABBAR_HEIGHT / 2,
@@ -60,7 +63,7 @@ function CameraButton() {
     if (res.didCancel || !res) {
       return;
     }
-    console.log(res);
+    navigation.push('UploadScreen', {res});
   };
 
   const onLaunchCamera = () => {

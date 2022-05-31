@@ -4,9 +4,11 @@ import {
   createNativeStackNavigator,
   NativeStackNavigationProp,
 } from '@react-navigation/native-stack';
+import {ImagePickerResponse} from 'react-native-image-picker';
 
 import SignInScreen from './SignInScreen';
 import WelcomeScreen from './WelcomeScreen';
+import UploadScreen from './UploadScreen';
 import {User, useUserContext} from '../contexts/UserContext';
 import MainTab from './MainTab';
 import {subscribeAuth} from '../lib/auth';
@@ -14,6 +16,11 @@ import {getUser} from '../lib/users';
 
 type RootStackParamList = {
   MainTab: undefined;
+  UploadScreen:
+    | {
+        res: ImagePickerResponse;
+      }
+    | undefined;
   SignInScreen:
     | {
         isSignUp: boolean;
@@ -37,6 +44,11 @@ export type SignInScreenRouteProp = RouteProp<
 export type WelcomeScreenRouteProp = RouteProp<
   RootStackParamList,
   'WelcomeScreen'
+>;
+
+export type UploadScreenRouteProp = RouteProp<
+  RootStackParamList,
+  'UploadScreen'
 >;
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -66,6 +78,11 @@ function RootStack() {
             name="MainTab"
             component={MainTab}
             options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="UploadScreen"
+            component={UploadScreen}
+            options={{title: '새 게시물', headerBackTitle: '뒤로가기'}}
           />
         </>
       ) : (
