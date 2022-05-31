@@ -5,9 +5,16 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 interface UploadModeModalProps {
   visible: boolean;
   onClose: () => void;
+  onLaunchCamera: () => void;
+  onLaunchImageLibrary: () => void;
 }
 
-function UploadModeModal({visible, onClose}: UploadModeModalProps) {
+function UploadModeModal({
+  visible,
+  onClose,
+  onLaunchCamera,
+  onLaunchImageLibrary,
+}: UploadModeModalProps) {
   return (
     <Modal
       visible={visible}
@@ -18,7 +25,11 @@ function UploadModeModal({visible, onClose}: UploadModeModalProps) {
         <View style={styles.whiteBox}>
           <Pressable
             style={styles.actionButton}
-            android_ripple={{color: '#eee'}}>
+            android_ripple={{color: '#eee'}}
+            onPress={() => {
+              onLaunchCamera();
+              onClose();
+            }}>
             <Icon
               name="camera-alt"
               color="#757575"
@@ -29,7 +40,11 @@ function UploadModeModal({visible, onClose}: UploadModeModalProps) {
           </Pressable>
           <Pressable
             android_ripple={{color: '#eee'}}
-            style={styles.actionButton}>
+            style={styles.actionButton}
+            onPress={() => {
+              onLaunchImageLibrary();
+              onClose();
+            }}>
             <Icon name="photo" color="#757575" style={styles.icon} size={24} />
             <Text style={styles.text}>사진 선택하기</Text>
           </Pressable>

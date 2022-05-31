@@ -8,9 +8,23 @@ import {
 } from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import {
+  launchImageLibrary,
+  launchCamera,
+  ImageLibraryOptions,
+  ImagePickerResponse,
+} from 'react-native-image-picker';
+
 import UploadModeModal from './UploadModeModal';
 
 const TABBAR_HEIGHT = 49;
+
+const imagePickerOption = {
+  mediaType: 'photo',
+  maxWidth: 768,
+  maxHeight: 768,
+  includeBase64: Platform.OS === 'android',
+} as ImageLibraryOptions;
 
 function CameraButton() {
   const [modalVisible, setModalVisible] = useState(false);
@@ -34,12 +48,26 @@ function CameraButton() {
       },
       buttonIndex => {
         if (buttonIndex === 0) {
-          console.log('camera');
+          onLaunchCamera();
         } else if (buttonIndex === 1) {
-          console.log('picture');
+          onLaunchImageLibrary();
         }
       },
     );
+  };
+
+  const onPickImage = (res: ImagePickerResponse) => {
+    if (res.didCancel || !res) {
+      return;
+    }
+    console.log(res);
+  };
+
+  const onLaunchCamera = () => {
+    launchCamera(imagePickerOption, onPickImage);
+  };
+  const onLaunchImageLibrary = () => {
+    launchImageLibrary(imagePickerOption, onPickImage);
   };
 
   return (
@@ -57,6 +85,8 @@ function CameraButton() {
       <UploadModeModal
         visible={modalVisible}
         onClose={() => setModalVisible(false)}
+        onLaunchCamera={onLaunchCamera}
+        onLaunchImageLibrary={onLaunchImageLibrary}
       />
     </>
   );
