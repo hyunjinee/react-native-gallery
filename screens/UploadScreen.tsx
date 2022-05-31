@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {
   StyleSheet,
   TextInput,
@@ -7,17 +7,22 @@ import {
   Animated,
   Keyboard,
 } from 'react-native';
-import {useRoute} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 
-import {UploadScreenRouteProp} from './RootStack';
+import {RootStackNavigationProp, UploadScreenRouteProp} from './RootStack';
+import IconRightButton from '../components/IconRightButton';
 
 function UploadScreen() {
   const route = useRoute<UploadScreenRouteProp>();
+  const navigation = useNavigation<RootStackNavigationProp>();
   const {width} = useWindowDimensions();
   const animation = useRef(new Animated.Value(width)).current;
   const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
+  const [description, setDescription] = useState('');
 
   const {res} = route.params || {};
+
+  const onSubmit = useCallback(() => {}, []);
 
   useEffect(() => {
     const didShow = Keyboard.addListener('keyboardDidShow', () =>
@@ -43,6 +48,12 @@ function UploadScreen() {
     }).start();
   }, [isKeyboardOpen, width, animation]);
 
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => <IconRightButton onPress={onSubmit} name="send" />,
+    });
+  }, [navigation, onSubmit]);
+
   return (
     <View style={styles.block}>
       <Animated.Image
@@ -54,6 +65,8 @@ function UploadScreen() {
         multiline={true}
         placeholder="이 사진에 대한 설명을 입력해주세요."
         textAlignVertical="top"
+        value={description}
+        onChangeText={setDescription}
       />
     </View>
   );
