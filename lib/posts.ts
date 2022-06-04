@@ -59,3 +59,18 @@ export async function getOlderPosts(id: string) {
 
   return posts;
 }
+
+export async function getNewerPosts(id: string) {
+  const cursorDoc = await postsCollection.doc(id).get();
+  const snapshot = await postsCollection
+    .orderBy('createdAt', 'desc')
+    .endBefore(cursorDoc)
+    .limit(PAGE_SIZE)
+    .get();
+
+  const posts = snapshot.docs.map(doc => ({
+    id: doc.id,
+    ...doc.data(),
+  }));
+  return posts;
+}
