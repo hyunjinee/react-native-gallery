@@ -1,4 +1,5 @@
 import firestore from '@react-native-firebase/firestore';
+import {PostWithId} from '../components/Profile';
 import {User} from '../contexts/UserContext';
 
 const postsCollection = firestore().collection('posts');
@@ -30,7 +31,7 @@ export function createPost({
   });
 }
 
-export const PAGE_SIZE = 3;
+export const PAGE_SIZE = 12;
 
 export async function getOlderPosts(id: string) {
   const cursorDoc = await postsCollection.doc(id).get();
@@ -82,4 +83,51 @@ export async function getNewerPosts(id: string, userId: string) {
   }));
 
   return posts;
+}
+
+export async function getPosts2({
+  userId,
+  mode,
+  id,
+}: {
+  userId: string;
+  mode?: string;
+  id?: string;
+}) {
+  let query = postsCollection.orderBy('createdAt', 'desc').limit(PAGE_SIZE);
+  if (userId) {
+    query = query.where('user.id', '==', userId);
+  }
+  if (id) {
+    const cursorDoc = await postsCollection.doc(id).get();
+    query =
+      mode === 'older'
+        ? query.startAfter(cursorDoc)
+        : query.endBefore(cursorDoc);
+  }
+
+  const snapshot = await query.get();
+
+  const posts = snapshot.docs.map(doc => ({
+    id: doc.id,
+    ...doc.data(),
+  }));
+
+  return posts as PostWithId[];
+}
+
+export async function getOlderPosts2(id: string, userId: string) {
+  return getPosts2({
+    id,
+    mode: 'older',
+    userId,
+  });
+}
+
+export async function getNewerPosts2(id: string, userId: string) {
+  return getPosts2({
+    id,
+    mode: 'newer',
+    userId,
+  });
 }

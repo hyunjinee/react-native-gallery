@@ -15,7 +15,7 @@ interface PostCardProps {
   id: string;
 }
 
-function PostCard({user, photoURL, description, createdAt, id}: PostCardProps) {
+function PostCard({user, photoURL, description, createdAt}: PostCardProps) {
   const date = useMemo(
     () => (createdAt ? new Date(createdAt._seconds * 1000) : new Date()),
     [createdAt],
