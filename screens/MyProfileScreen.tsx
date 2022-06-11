@@ -1,26 +1,28 @@
-import {useNavigation, useRoute} from '@react-navigation/native';
 import React, {useEffect} from 'react';
+import {useNavigation, useRoute} from '@react-navigation/native';
+
 import Profile from '../components/Profile';
 import {
   MyProfileStackRouteProp,
   MyProfileStackNavigationProp,
 } from './MyProfileStack';
+import {useUserContext} from '../contexts/UserContext';
 
 function MyProfileScreen() {
-  const route = useRoute<MyProfileStackRouteProp>();
+  const {user} = useUserContext();
   const navigation = useNavigation<MyProfileStackNavigationProp>();
-  const {userId, displayName} = route.params ?? {};
-  displayName;
-  navigation;
 
-  console.log(userId, '?');
+  const route = useRoute<MyProfileStackRouteProp>();
+  const {userId, displayName} = route.params ?? {};
+  // displayName;
+  // navigation;
 
   useEffect(() => {
     navigation.setOptions({
-      title: displayName,
+      title: user?.displayName,
     });
-  }, [navigation, displayName]);
-  return <Profile userId={userId as string} />;
+  }, [navigation, user]);
+  return <Profile userId={user?.id as string} />;
 }
 
 export default MyProfileScreen;

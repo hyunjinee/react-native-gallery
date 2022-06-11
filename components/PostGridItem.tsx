@@ -1,15 +1,23 @@
 import React from 'react';
+import {useNavigation} from '@react-navigation/native';
 import {Image, Pressable, StyleSheet, useWindowDimensions} from 'react-native';
+
 import {PostWithId} from './Profile';
+import {HomeStackNavigationProp} from '../screens/HomeStack';
 
 interface PostGridItemProps {
   post: PostWithId;
 }
 function PostGridItem({post}: PostGridItemProps) {
+  const navigation = useNavigation<HomeStackNavigationProp>();
   const dimensions = useWindowDimensions();
+
   const size = (dimensions.width - 3) / 3;
-  const onPress = () => {};
-  console.log(post);
+
+  const onPress = () => {
+    navigation.navigate('PostScreen', {post});
+  };
+
   return (
     <Pressable
       onPress={onPress}

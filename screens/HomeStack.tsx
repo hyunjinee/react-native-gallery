@@ -7,6 +7,8 @@ import {
 
 import FeedScreen from './FeedScreen';
 import ProfileScreen from './ProfileScreen';
+import PostScreen from './PostScreen';
+import {PostWithId} from '../components/Profile';
 
 type HomeStackParamList = {
   FeedScreen: undefined;
@@ -16,12 +18,15 @@ type HomeStackParamList = {
         displayName: string;
       }
     | undefined;
+  PostScreen: {post: PostWithId} | undefined;
 };
 
 export type ProfileScreenRouteProp = RouteProp<
   HomeStackParamList,
   'ProfileScreen'
 >;
+
+export type PostScreenRouteProp = RouteProp<HomeStackParamList, 'PostScreen'>;
 
 export type HomeStackNavigationProp =
   NativeStackNavigationProp<HomeStackParamList>;
@@ -33,6 +38,11 @@ function HomeStack() {
     <Stack.Navigator>
       <Stack.Screen name="FeedScreen" component={FeedScreen} />
       <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
+      <Stack.Screen
+        name="PostScreen"
+        component={PostScreen}
+        options={{title: '게시물'}}
+      />
     </Stack.Navigator>
   );
 }

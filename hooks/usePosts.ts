@@ -18,7 +18,7 @@ export default function usePosts(userId?: string) {
     }
 
     const lastPost = posts[posts.length - 1];
-    const olderPosts = await getOlderPosts2(lastPost.id, userId);
+    const olderPosts = await getOlderPosts2(lastPost.id, userId as string);
 
     if (olderPosts.length < PAGE_SIZE) {
       setNoMorePost(true);
@@ -35,7 +35,7 @@ export default function usePosts(userId?: string) {
     const firstPost = posts[0];
     setRefreshing(true);
 
-    const newerPosts = await getNewerPosts2(firstPost.id, userId);
+    const newerPosts = await getNewerPosts2(firstPost.id, userId as string);
 
     setRefreshing(false);
     if (newerPosts.length === 0) {
@@ -46,12 +46,14 @@ export default function usePosts(userId?: string) {
   };
 
   useEffect(() => {
-    getPosts2({userId}).then(_posts => {
-      setPosts(_posts);
-      if (_posts.length < PAGE_SIZE) {
-        setNoMorePost(true);
-      }
-    });
+    if (userId) {
+      getPosts2({userId}).then(_posts => {
+        setPosts(_posts);
+        if (_posts.length < PAGE_SIZE) {
+          setNoMorePost(true);
+        }
+      });
+    }
   }, [userId]);
 
   return {

@@ -1,33 +1,48 @@
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useNavigationState} from '@react-navigation/native';
 import React, {useMemo} from 'react';
 import {Image, Pressable, StyleSheet, Text, View} from 'react-native';
 
 import {User} from '../contexts/UserContext';
 import {HomeStackNavigationProp} from '../screens/HomeStack';
+import {MyProfileStackNavigationProp} from '../screens/MyProfileStack';
 
 interface PostCardProps {
   user: User;
   photoURL: string;
   description: string;
   createdAt: {
-    _seconds: number;
+    nanoseconds: number;
+    seconds: number;
   };
   id: string;
 }
 
 function PostCard({user, photoURL, description, createdAt}: PostCardProps) {
   const date = useMemo(
-    () => (createdAt ? new Date(createdAt._seconds * 1000) : new Date()),
+    () => (createdAt ? new Date(createdAt.seconds * 1000) : new Date()),
     [createdAt],
   );
 
-  const navigation = useNavigation<HomeStackNavigationProp>();
+  const navigation = useNavigation<
+    HomeStackNavigationProp | MyProfileStackNavigationProp
+  >();
+  const routeNames = useNavigationState(state => state.routeNames);
+  console.log(routeNames);
 
   const onOpenProfile = () => {
-    navigation.navigate('ProfileScreen', {
-      displayName: user.displayName!,
-      userId: user.id!,
-    });
+    if (routeNames.find(routeName => routeName === 'MyProfileScreen')) {
+      navigation.navigate('MyProfileScreen');
+    } else {
+      navigation.navigate('ProfileScreen', {
+        userId: user.id,
+        displayName: user.displayName,
+      });
+    }
+
+    // navigation.navigate('ProfileScreen', {
+    //   displayName: user.displayName!,
+    //   userId: user.id!,
+    // });
   };
 
   return (

@@ -27,10 +27,6 @@ function Profile({userId}: ProfileProps) {
   const [user, setUser] = useState<
     FirebaseFirestoreTypes.DocumentData | undefined
   >(undefined);
-  // const [posts, setPosts] = useState<
-  //   FirebaseFirestoreTypes.DocumentData | undefined
-  // >();
-
   const {posts, noMorePost, refreshing, onLoadMore, onRefresh} =
     usePosts(userId);
 

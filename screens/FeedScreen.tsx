@@ -6,13 +6,14 @@ import {
   StyleSheet,
 } from 'react-native';
 import PostCard from '../components/PostCard';
+import {useUserContext} from '../contexts/UserContext';
 import usePosts from '../hooks/usePosts';
 
 function FeedScreen() {
-  const {posts, noMorePost, refreshing, onLoadMore, onRefresh} = usePosts();
-  // const [posts, setPosts] = useState<{id: string}[] | null>(null);
-  // const [noMorePost, setNoMorePost] = useState(false);
-  // const [refreshing, setRefreshing] = useState(false);
+  const user = useUserContext();
+  const {posts, noMorePost, refreshing, onLoadMore, onRefresh} = usePosts(
+    user.user?.id,
+  );
 
   const renderItem = ({item}: any) => (
     <PostCard

@@ -6,6 +6,7 @@ import {
 } from '@react-navigation/native-stack';
 
 import MyProfileScreen from './MyProfileScreen';
+import PostScreen from './PostScreen';
 
 type MyProfileStackParamList = {
   MyProfileScreen:
@@ -14,6 +15,8 @@ type MyProfileStackParamList = {
         displayName: string;
       }
     | undefined;
+
+  PostScreen: undefined;
 };
 
 export type MyProfileStackNavigationProp =
@@ -30,6 +33,11 @@ function MyProfileStack() {
   return (
     <Stack.Navigator>
       <Stack.Screen name="MyProfileScreen" component={MyProfileScreen} />
+      <Stack.Screen
+        name="PostScreen"
+        component={PostScreen}
+        options={{title: '게시물'}}
+      />
     </Stack.Navigator>
   );
 }
