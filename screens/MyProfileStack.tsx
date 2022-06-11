@@ -1,11 +1,28 @@
 import React from 'react';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {RouteProp} from '@react-navigation/native';
+import {
+  createNativeStackNavigator,
+  NativeStackNavigationProp,
+} from '@react-navigation/native-stack';
 
 import MyProfileScreen from './MyProfileScreen';
 
 type MyProfileStackParamList = {
-  MyProfileScreen: undefined;
+  MyProfileScreen:
+    | {
+        userId: string;
+        displayName: string;
+      }
+    | undefined;
 };
+
+export type MyProfileStackNavigationProp =
+  NativeStackNavigationProp<MyProfileStackParamList>;
+
+export type MyProfileStackRouteProp = RouteProp<
+  MyProfileStackParamList,
+  'MyProfileScreen'
+>;
 
 const Stack = createNativeStackNavigator<MyProfileStackParamList>();
 

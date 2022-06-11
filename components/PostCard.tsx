@@ -1,6 +1,9 @@
+import {useNavigation} from '@react-navigation/native';
 import React, {useMemo} from 'react';
 import {Image, Pressable, StyleSheet, Text, View} from 'react-native';
+
 import {User} from '../contexts/UserContext';
+import {HomeStackNavigationProp} from '../screens/HomeStack';
 
 interface PostCardProps {
   user: User;
@@ -18,7 +21,14 @@ function PostCard({user, photoURL, description, createdAt, id}: PostCardProps) {
     [createdAt],
   );
 
-  const onOpenProfile = () => {};
+  const navigation = useNavigation<HomeStackNavigationProp>();
+
+  const onOpenProfile = () => {
+    navigation.navigate('ProfileScreen', {
+      displayName: user.displayName!,
+      userId: user.id!,
+    });
+  };
 
   return (
     <View style={styles.block}>

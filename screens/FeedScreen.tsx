@@ -4,16 +4,9 @@ import {
   FlatList,
   RefreshControl,
   StyleSheet,
-  View,
 } from 'react-native';
 import PostCard from '../components/PostCard';
-import {
-  getNewerPosts,
-  getOlderPosts,
-  getPosts,
-  PAGE_SIZE,
-  Post,
-} from '../lib/posts';
+import {getNewerPosts, getOlderPosts, getPosts, PAGE_SIZE} from '../lib/posts';
 
 function FeedScreen() {
   const [posts, setPosts] = useState<{id: string}[] | null>(null);

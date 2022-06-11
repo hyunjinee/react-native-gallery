@@ -3,14 +3,13 @@ import React, {useEffect, useState} from 'react';
 import {
   ActivityIndicator,
   FlatList,
-  Image,
   StyleSheet,
   Text,
   View,
 } from 'react-native';
-import {User} from '../contexts/UserContext';
 import {getPosts} from '../lib/posts';
 import {getUser} from '../lib/users';
+import Avatar from './Avatar';
 
 interface ProfileProps {
   userId: string;
@@ -40,15 +39,7 @@ function Profile({userId}: ProfileProps) {
       style={styles.block}
       ListHeaderComponent={
         <View style={styles.userInfo}>
-          <Image
-            source={
-              user.photoURL
-                ? {uri: user.photoURL}
-                : require('../assets/user.png')
-            }
-            style={styles.avatar}
-            resizeMode="cover"
-          />
+          <Avatar source={user.photoURL && {uri: user.photoURL}} size={128} />
           <Text style={styles.username}>{user.displayName}</Text>
         </View>
       }
@@ -57,11 +48,28 @@ function Profile({userId}: ProfileProps) {
 }
 
 const styles = StyleSheet.create({
-  spinner: {},
-  block: {},
-  userInfo: {},
-  avatar: {},
-  username: {},
+  spinner: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  block: {
+    flex: 1,
+  },
+  userInfo: {
+    paddingTop: 80,
+    paddingBottom: 64,
+    alignItems: 'center',
+  },
+  avatar: {
+    width: 128,
+    height: 128,
+    borderRadius: 64,
+  },
+  username: {
+    marginTop: 8,
+    fontSize: 24,
+    color: '#424242',
+  },
 });
 
 export default Profile;
