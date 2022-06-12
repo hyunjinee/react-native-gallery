@@ -1,10 +1,13 @@
 import {useNavigation, useNavigationState} from '@react-navigation/native';
 import React, {useMemo} from 'react';
 import {Image, Pressable, StyleSheet, Text, View} from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
-import {User} from '../contexts/UserContext';
+import {User, useUserContext} from '../contexts/UserContext';
+import usePostActions from '../hooks/usePostActions';
 import {HomeStackNavigationProp} from '../screens/HomeStack';
 import {MyProfileStackNavigationProp} from '../screens/MyProfileStack';
+import ActionSheetModal from './ActionSheetModal';
 
 interface PostCardProps {
   user: User;
@@ -27,8 +30,14 @@ function PostCard({user, photoURL, description, createdAt}: PostCardProps) {
     HomeStackNavigationProp | MyProfileStackNavigationProp
   >();
   const routeNames = useNavigationState(state => state.routeNames);
-  console.log(routeNames);
+  // console.log(routeNames);
+  const {user: me} = useUserContext();
+  const isMyPost = me?.id === user.id;
 
+  const {isSelecting, onPressMore, onClose, actions} = usePostActions({
+    id: user.id || (me!.id as string),
+    description,
+  });
   const onOpenProfile = () => {
     if (routeNames.find(routeName => routeName === 'MyProfileScreen')) {
       navigation.navigate('MyProfileScreen');
@@ -60,6 +69,11 @@ function PostCard({user, photoURL, description, createdAt}: PostCardProps) {
           />
           <Text style={styles.displayName}>{user.displayName}</Text>
         </Pressable>
+        {isMyPost && (
+          <Pressable hitSlop={8} onPress={onPressMore}>
+            <Icon name="more-vert" size={20} />
+          </Pressable>
+        )}
       </View>
       <Image
         source={{uri: photoURL}}
@@ -71,6 +85,12 @@ function PostCard({user, photoURL, description, createdAt}: PostCardProps) {
         <Text style={styles.description}>{description}</Text>
         <Text style={styles.date}>{date.toLocaleDateString()}</Text>
       </View>
+
+      <ActionSheetModal
+        visible={isSelecting}
+        actions={actions}
+        onClose={onClose}
+      />
     </View>
   );
 }

@@ -131,3 +131,7 @@ export async function getNewerPosts2(id: string, userId: string) {
     userId,
   });
 }
+
+export function removePost(id: string) {
+  return postsCollection.doc(id).delete();
+}
