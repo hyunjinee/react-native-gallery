@@ -16,7 +16,10 @@ export default function usePostActions({
   const route = useRoute();
 
   const edit = () => {
-    console.log('TODO: edit');
+    navigation.navigate('ModifyScreen', {
+      id,
+      description,
+    });
   };
 
   const remove = async () => {

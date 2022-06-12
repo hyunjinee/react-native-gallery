@@ -6,11 +6,12 @@ import {
 } from '@react-navigation/native-stack';
 import {ImagePickerResponse} from 'react-native-image-picker';
 
+import MainTab from './MainTab';
 import SignInScreen from './SignInScreen';
 import WelcomeScreen from './WelcomeScreen';
 import UploadScreen from './UploadScreen';
+import ModifyScreen from './ModifyScreen';
 import {User, useUserContext} from '../contexts/UserContext';
-import MainTab from './MainTab';
 import {subscribeAuth} from '../lib/auth';
 import {getUser} from '../lib/users';
 
@@ -31,6 +32,12 @@ type RootStackParamList = {
         uid: string;
       }
     | undefined;
+  ModifyScreen:
+    | {
+        id: string;
+        description: string;
+      }
+    | undefined;
 };
 
 export type RootStackNavigationProp =
@@ -49,6 +56,11 @@ export type WelcomeScreenRouteProp = RouteProp<
 export type UploadScreenRouteProp = RouteProp<
   RootStackParamList,
   'UploadScreen'
+>;
+
+export type ModifyScreenRouteProp = RouteProp<
+  RootStackParamList,
+  'ModifyScreen'
 >;
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -83,6 +95,11 @@ function RootStack() {
             name="UploadScreen"
             component={UploadScreen}
             options={{title: '새 게시물', headerBackTitle: '뒤로가기'}}
+          />
+          <Stack.Screen
+            name="ModifyScreen"
+            component={ModifyScreen}
+            options={{title: '수정', headerBackTitle: '뒤로가기'}}
           />
         </>
       ) : (

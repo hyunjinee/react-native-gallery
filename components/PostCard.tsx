@@ -3,11 +3,11 @@ import React, {useMemo} from 'react';
 import {Image, Pressable, StyleSheet, Text, View} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
-import {User, useUserContext} from '../contexts/UserContext';
 import usePostActions from '../hooks/usePostActions';
+import ActionSheetModal from './ActionSheetModal';
+import {User, useUserContext} from '../contexts/UserContext';
 import {HomeStackNavigationProp} from '../screens/HomeStack';
 import {MyProfileStackNavigationProp} from '../screens/MyProfileStack';
-import ActionSheetModal from './ActionSheetModal';
 
 interface PostCardProps {
   user: User;
@@ -20,7 +20,7 @@ interface PostCardProps {
   id: string;
 }
 
-function PostCard({user, photoURL, description, createdAt}: PostCardProps) {
+function PostCard({user, photoURL, description, createdAt, id}: PostCardProps) {
   const date = useMemo(
     () => (createdAt ? new Date(createdAt.seconds * 1000) : new Date()),
     [createdAt],
@@ -30,12 +30,12 @@ function PostCard({user, photoURL, description, createdAt}: PostCardProps) {
     HomeStackNavigationProp | MyProfileStackNavigationProp
   >();
   const routeNames = useNavigationState(state => state.routeNames);
-  // console.log(routeNames);
+
   const {user: me} = useUserContext();
   const isMyPost = me?.id === user.id;
 
   const {isSelecting, onPressMore, onClose, actions} = usePostActions({
-    id: user.id || (me!.id as string),
+    id,
     description,
   });
   const onOpenProfile = () => {
