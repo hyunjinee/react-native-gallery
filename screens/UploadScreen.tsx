@@ -17,6 +17,7 @@ import {createPost} from '../lib/posts';
 import {RootStackNavigationProp, UploadScreenRouteProp} from './RootStack';
 import IconRightButton from '../components/IconRightButton';
 import {useUserContext} from '../contexts/UserContext';
+import events from '../lib/event';
 
 function UploadScreen() {
   const route = useRoute<UploadScreenRouteProp>();
@@ -45,6 +46,8 @@ function UploadScreen() {
     }
     const photoURL = await reference.getDownloadURL();
     await createPost({description, photoURL, user});
+
+    events.emit('refresh');
   }, [res, user, description, navigation]);
 
   useEffect(() => {

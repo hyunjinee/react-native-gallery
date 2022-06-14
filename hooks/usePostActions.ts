@@ -1,7 +1,9 @@
 import {useState} from 'react';
 import {ActionSheetIOS, Platform} from 'react-native';
 import {useNavigation, useRoute} from '@react-navigation/native';
+
 import {removePost} from '../lib/posts';
+import events from '../lib/event';
 
 export default function usePostActions({
   id,
@@ -23,12 +25,13 @@ export default function usePostActions({
   };
 
   const remove = async () => {
-    console.log(id);
     await removePost(id);
 
     if (route.name === 'PostScreen') {
       navigation.goBack();
     }
+
+    events.emit('removePost', id);
   };
 
   const onPressMore = () => {

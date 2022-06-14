@@ -8,8 +8,10 @@ import {
   Text,
   View,
 } from 'react-native';
+import {useUserContext} from '../contexts/UserContext';
 
 import usePosts from '../hooks/usePosts';
+import events from '../lib/event';
 import {Post} from '../lib/posts';
 import {getUser} from '../lib/users';
 import Avatar from './Avatar';
@@ -27,22 +29,39 @@ function Profile({userId}: ProfileProps) {
   const [user, setUser] = useState<
     FirebaseFirestoreTypes.DocumentData | undefined
   >(undefined);
-  const {posts, noMorePost, refreshing, onLoadMore, onRefresh} =
+  const {posts, noMorePost, refreshing, onLoadMore, onRefresh, removePost} =
     usePosts(userId);
+  const {user: me} = useUserContext();
+
+  const isMyProfile = me?.id === userId;
 
   useEffect(() => {
     getUser(userId).then(setUser);
   }, [userId]);
+
+  useEffect(() => {
+    if (!isMyProfile) {
+      return;
+    }
+
+    events.addListener('refresh', onRefresh);
+    events.addListener('removePost', removePost);
+
+    return () => {
+      events.removeListener('refresh', onRefresh);
+      events.removeListener('removePost', removePost);
+    };
+  }, [isMyProfile, onRefresh, removePost]);
+
+  const renderItem = ({item}: {item: PostWithId}) => (
+    <PostGridItem post={item} />
+  );
 
   if (!user || !posts) {
     return (
       <ActivityIndicator style={styles.spinner} size={32} color="#6200ee" />
     );
   }
-
-  const renderItem = ({item}: {item: PostWithId}) => (
-    <PostGridItem post={item} />
-  );
 
   return (
     <FlatList

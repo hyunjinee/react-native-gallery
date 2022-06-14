@@ -38,6 +38,7 @@ function PostCard({user, photoURL, description, createdAt, id}: PostCardProps) {
     id,
     description,
   });
+
   const onOpenProfile = () => {
     if (routeNames.find(routeName => routeName === 'MyProfileScreen')) {
       navigation.navigate('MyProfileScreen');
