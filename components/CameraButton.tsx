@@ -14,10 +14,11 @@ import {
   ImageLibraryOptions,
   ImagePickerResponse,
 } from 'react-native-image-picker';
+import {useNavigation} from '@react-navigation/native';
 
 import UploadModeModal from './UploadModeModal';
-import {useNavigation} from '@react-navigation/native';
 import {RootStackNavigationProp} from '../screens/RootStack';
+import ActionSheetModal from './ActionSheetModal';
 
 const TABBAR_HEIGHT = 49;
 
@@ -85,11 +86,27 @@ function CameraButton() {
           <Icon name="camera-alt" color="white" size={24} />
         </Pressable>
       </View>
-      <UploadModeModal
+      {/* <UploadModeModal
         visible={modalVisible}
         onClose={() => setModalVisible(false)}
         onLaunchCamera={onLaunchCamera}
         onLaunchImageLibrary={onLaunchImageLibrary}
+      /> */}
+      <ActionSheetModal
+        visible={modalVisible}
+        onClose={() => setModalVisible(false)}
+        actions={[
+          {
+            icon: 'camera-alt',
+            text: '카메라로 촬영하기',
+            onPress: onLaunchCamera,
+          },
+          {
+            icon: 'photo',
+            text: '사진 선택하기',
+            onPress: onLaunchImageLibrary,
+          },
+        ]}
       />
     </>
   );

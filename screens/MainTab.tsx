@@ -2,10 +2,10 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import CameraButton from '../components/CameraButton';
 
 import HomeStack from './HomeStack';
 import MyProfileStack from './MyProfileStack';
+import CameraButton from '../components/CameraButton';
 
 type MainTabParamList = {
   HomeStack: undefined;

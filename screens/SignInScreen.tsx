@@ -19,11 +19,6 @@ import {getUser} from '../lib/users';
 import {User, useUserContext} from '../contexts/UserContext';
 
 function SignInScreen() {
-  const navigation = useNavigation<RootStackNavigationProp>();
-  const {params} = useRoute<SignInScreenRouteProp>();
-
-  const isSignUp = params?.isSignUp ?? undefined;
-
   const [form, setForm] = useState({
     email: '',
     password: '',
@@ -32,12 +27,18 @@ function SignInScreen() {
   const [loading, setLoading] = useState(false);
   const {setUser} = useUserContext();
 
+  const navigation = useNavigation<RootStackNavigationProp>();
+  const {params} = useRoute<SignInScreenRouteProp>();
+
+  const isSignUp = params?.isSignUp ?? undefined;
+
   const createChangeTextHandler = (name: string) => (value: string) => {
     setForm({...form, [name]: value});
   };
 
   const onSubmit = async () => {
     Keyboard.dismiss();
+
     const {email, password, confirmPassword} = form;
 
     if (isSignUp && password !== confirmPassword) {
@@ -45,19 +46,17 @@ function SignInScreen() {
       return;
     }
 
-    const info = {email, password};
     setLoading(true);
+    const info = {email, password};
 
     try {
       const {user} = isSignUp ? await signUp(info) : await signIn(info);
-      console.log(user);
       const profile = await getUser(user.uid);
 
       if (!profile) {
         navigation.navigate('WelcomeScreen', {uid: user.uid});
       } else {
         setUser(profile as User);
-        navigation.navigate('WelcomeScreen', {uid: user.uid});
       }
     } catch (error: any) {
       const messages = {
@@ -77,10 +76,10 @@ function SignInScreen() {
         ] || `${isSignUp ? '가입' : '로그인'} 실패`;
 
       Alert.alert('실패', msg);
-      console.log(error);
-    } finally {
-      setLoading(false);
     }
+    //  finally {
+    //   setLoading(false);
+    // }
   };
 
   return (

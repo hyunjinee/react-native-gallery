@@ -1,5 +1,6 @@
 import React, {useEffect} from 'react';
 import {useNavigation, useRoute} from '@react-navigation/native';
+
 import Profile from '../components/Profile';
 import {ProfileScreenRouteProp} from './HomeStack';
 import {MyProfileStackNavigationProp} from './MyProfileStack';

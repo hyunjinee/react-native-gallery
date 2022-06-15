@@ -8,10 +8,8 @@ import {
   Text,
   View,
 } from 'react-native';
-import {useUserContext} from '../contexts/UserContext';
 
 import usePosts from '../hooks/usePosts';
-import events from '../lib/event';
 import {Post} from '../lib/posts';
 import {getUser} from '../lib/users';
 import Avatar from './Avatar';
@@ -31,9 +29,6 @@ function Profile({userId}: ProfileProps) {
   >(undefined);
   const {posts, noMorePost, refreshing, onLoadMore, onRefresh} =
     usePosts(userId);
-  // const {user: me} = useUserContext();
-
-  // const isMyProfile = me?.id === userId;
 
   useEffect(() => {
     getUser(userId).then(setUser);

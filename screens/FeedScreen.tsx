@@ -7,9 +7,9 @@ import {
 } from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
 
+import usePosts from '../hooks/usePosts';
 import PostCard from '../components/PostCard';
 import {useUserContext} from '../contexts/UserContext';
-import usePosts from '../hooks/usePosts';
 
 function FeedScreen() {
   const user = useUserContext();
@@ -23,16 +23,6 @@ function FeedScreen() {
       SplashScreen.hide();
     }
   }, [postsReady]);
-
-  const renderItem = ({item}: any) => (
-    <PostCard
-      createdAt={item.createdAt}
-      description={item.description}
-      id={item.id}
-      user={item.user}
-      photoURL={item.photoURL}
-    />
-  );
 
   return (
     <FlatList
@@ -53,6 +43,16 @@ function FeedScreen() {
     />
   );
 }
+
+const renderItem = ({item}: any) => (
+  <PostCard
+    createdAt={item.createdAt}
+    description={item.description}
+    id={item.id}
+    user={item.user}
+    photoURL={item.photoURL}
+  />
+);
 
 const styles = StyleSheet.create({
   container: {

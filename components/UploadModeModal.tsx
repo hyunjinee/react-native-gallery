@@ -42,6 +42,7 @@ function UploadModeModal({
             android_ripple={{color: '#eee'}}
             style={styles.actionButton}
             onPress={() => {
+              console.log('hi');
               onLaunchImageLibrary();
               onClose();
             }}>

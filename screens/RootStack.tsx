@@ -12,10 +12,10 @@ import SignInScreen from './SignInScreen';
 import WelcomeScreen from './WelcomeScreen';
 import UploadScreen from './UploadScreen';
 import ModifyScreen from './ModifyScreen';
+import SettingScreen from './SettingScreen';
 import {User, useUserContext} from '../contexts/UserContext';
 import {subscribeAuth} from '../lib/auth';
 import {getUser} from '../lib/users';
-import SettingScreen from './SettingScreen';
 
 type RootStackParamList = {
   MainTab: undefined;
@@ -74,11 +74,15 @@ function RootStack() {
   useEffect(() => {
     const unsubscribe = subscribeAuth(async (currentUser: any) => {
       unsubscribe();
+      SplashScreen.hide();
+
       if (!currentUser) {
         SplashScreen.hide();
         return;
       }
+
       const profile = await getUser(currentUser.id);
+
       if (!profile) {
         return;
       }
@@ -108,9 +112,6 @@ function RootStack() {
           <Stack.Screen
             name="SettingScreen"
             component={SettingScreen}
-            // options={{
-            //   headerShown: false,
-            // }}
             options={{
               title: '설정',
               headerBackTitle: '뒤로가기',
@@ -131,13 +132,6 @@ function RootStack() {
             component={WelcomeScreen}
             options={{
               headerShown: false,
-            }}
-          />
-          <Stack.Screen
-            name="SettingScreen"
-            component={SettingScreen}
-            options={{
-              headerBackTitle: '뒤로가기',
             }}
           />
         </>

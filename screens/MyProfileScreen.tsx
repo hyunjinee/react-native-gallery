@@ -15,11 +15,8 @@ function MyProfileScreen() {
   const navigation = useNavigation<
     MyProfileStackNavigationProp | RootStackNavigationProp
   >();
-  const route = useRoute<MyProfileStackRouteProp>();
-
-  const {userId, displayName} = route.params ?? {};
-  // displayName;
-  // navigation;
+  // const route = useRoute<MyProfileStackRouteProp>();
+  // const {userId, displayName} = route.params ?? {};
 
   useEffect(() => {
     navigation.setOptions({
