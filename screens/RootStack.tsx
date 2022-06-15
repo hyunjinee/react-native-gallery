@@ -5,6 +5,7 @@ import {
   NativeStackNavigationProp,
 } from '@react-navigation/native-stack';
 import {ImagePickerResponse} from 'react-native-image-picker';
+import SplashScreen from 'react-native-splash-screen';
 
 import MainTab from './MainTab';
 import SignInScreen from './SignInScreen';
@@ -74,6 +75,7 @@ function RootStack() {
     const unsubscribe = subscribeAuth(async (currentUser: any) => {
       unsubscribe();
       if (!currentUser) {
+        SplashScreen.hide();
         return;
       }
       const profile = await getUser(currentUser.id);
