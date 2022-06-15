@@ -7,12 +7,16 @@ import {
   MyProfileStackNavigationProp,
 } from './MyProfileStack';
 import {useUserContext} from '../contexts/UserContext';
+import IconRightButton from '../components/IconRightButton';
+import {RootStackNavigationProp} from './RootStack';
 
 function MyProfileScreen() {
   const {user} = useUserContext();
-  const navigation = useNavigation<MyProfileStackNavigationProp>();
-
+  const navigation = useNavigation<
+    MyProfileStackNavigationProp | RootStackNavigationProp
+  >();
   const route = useRoute<MyProfileStackRouteProp>();
+
   const {userId, displayName} = route.params ?? {};
   // displayName;
   // navigation;
@@ -20,6 +24,12 @@ function MyProfileScreen() {
   useEffect(() => {
     navigation.setOptions({
       title: user?.displayName,
+      headerRight: () => (
+        <IconRightButton
+          name="settings"
+          onPress={() => navigation.push('SettingScreen')}
+        />
+      ),
     });
   }, [navigation, user]);
   return <Profile userId={user?.id as string} />;

@@ -14,6 +14,7 @@ import ModifyScreen from './ModifyScreen';
 import {User, useUserContext} from '../contexts/UserContext';
 import {subscribeAuth} from '../lib/auth';
 import {getUser} from '../lib/users';
+import SettingScreen from './SettingScreen';
 
 type RootStackParamList = {
   MainTab: undefined;
@@ -38,6 +39,7 @@ type RootStackParamList = {
         description: string;
       }
     | undefined;
+  SettingScreen: undefined;
 };
 
 export type RootStackNavigationProp =
@@ -101,6 +103,17 @@ function RootStack() {
             component={ModifyScreen}
             options={{title: '수정', headerBackTitle: '뒤로가기'}}
           />
+          <Stack.Screen
+            name="SettingScreen"
+            component={SettingScreen}
+            // options={{
+            //   headerShown: false,
+            // }}
+            options={{
+              title: '설정',
+              headerBackTitle: '뒤로가기',
+            }}
+          />
         </>
       ) : (
         <>
@@ -116,6 +129,13 @@ function RootStack() {
             component={WelcomeScreen}
             options={{
               headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="SettingScreen"
+            component={SettingScreen}
+            options={{
+              headerBackTitle: '뒤로가기',
             }}
           />
         </>
