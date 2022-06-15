@@ -20,13 +20,14 @@ import {useUserContext} from '../contexts/UserContext';
 import events from '../lib/event';
 
 function UploadScreen() {
-  const route = useRoute<UploadScreenRouteProp>();
-  const navigation = useNavigation<RootStackNavigationProp>();
-  const {width} = useWindowDimensions();
-  const animation = useRef(new Animated.Value(width)).current;
   const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
   const [description, setDescription] = useState('');
+  const {width} = useWindowDimensions();
   const {user} = useUserContext();
+  const animation = useRef(new Animated.Value(width)).current;
+
+  const route = useRoute<UploadScreenRouteProp>();
+  const navigation = useNavigation<RootStackNavigationProp>();
 
   const {res} = route.params || {};
 

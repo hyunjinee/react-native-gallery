@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 
 import IconRightButton from '../components/IconRightButton';
+import events from '../lib/event';
 import {updatePost} from '../lib/posts';
 import {ModifyScreenRouteProp} from './RootStack';
 
@@ -22,6 +23,12 @@ function ModifyScreen() {
       id: params?.id,
       description,
     });
+
+    events.emit('updatePost', {
+      postId: params?.id,
+      description,
+    });
+
     navigation.goBack();
   }, [description, navigation, params?.id]);
 

@@ -29,29 +29,15 @@ function Profile({userId}: ProfileProps) {
   const [user, setUser] = useState<
     FirebaseFirestoreTypes.DocumentData | undefined
   >(undefined);
-  const {posts, noMorePost, refreshing, onLoadMore, onRefresh, removePost} =
+  const {posts, noMorePost, refreshing, onLoadMore, onRefresh} =
     usePosts(userId);
-  const {user: me} = useUserContext();
+  // const {user: me} = useUserContext();
 
-  const isMyProfile = me?.id === userId;
+  // const isMyProfile = me?.id === userId;
 
   useEffect(() => {
     getUser(userId).then(setUser);
   }, [userId]);
-
-  useEffect(() => {
-    if (!isMyProfile) {
-      return;
-    }
-
-    events.addListener('refresh', onRefresh);
-    events.addListener('removePost', removePost);
-
-    return () => {
-      events.removeListener('refresh', onRefresh);
-      events.removeListener('removePost', removePost);
-    };
-  }, [isMyProfile, onRefresh, removePost]);
 
   const renderItem = ({item}: {item: PostWithId}) => (
     <PostGridItem post={item} />

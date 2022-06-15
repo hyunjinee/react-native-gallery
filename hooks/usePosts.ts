@@ -1,4 +1,5 @@
 import {useCallback, useEffect, useState} from 'react';
+
 import {PostWithId} from '../components/Profile';
 import {useUserContext} from '../contexts/UserContext';
 import {
@@ -68,10 +69,22 @@ export default function usePosts(userId?: string) {
     [posts],
   );
 
+  const updatePost = useCallback(
+    ({postId, description}: {postId: string; description: string}) => {
+      const nextPosts = posts?.map(post =>
+        post.id === postId ? {...post, description} : post,
+      );
+
+      setPosts(nextPosts as PostWithId[] | null);
+    },
+    [posts],
+  );
+
   usePostsEventEffect({
     refresh: onRefresh,
     removePost,
     enabled: !userId || userId === user?.id,
+    updatePost,
   });
 
   return {
@@ -80,6 +93,5 @@ export default function usePosts(userId?: string) {
     refreshing,
     onLoadMore,
     onRefresh,
-    removePost,
   };
 }
